@@ -1,115 +1,115 @@
-<h1 align="center">Test Environments for Claude Code</h1>
+# Test Environments for Claude Code
 
-<p align="center">
-  <strong>The open-source test environment desk that is just a database and Claude Code.</strong>
-</p>
+Keep test-environment bookings, version requirements, readiness evidence and handovers in a database you own. Ask which projects clash, which versions differ, and who needs to act before testing can start.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+## Three ways to own it
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Enov8 data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=enov8">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/enov8?utm_source=github&utm_medium=readme&utm_campaign=enov8">How it works</a></td>
-  </tr>
-</table>
+- **Do it yourself:** install the MIT-licensed base, import your instance register and operate it with Claude Code, Codex, OpenCode or Cursor. Hosting and your coding agent are separate costs.
+- **We customise it:** Enterprise DNA maps your Enov8 records, adds your fields and rules, connects your delivery tools, and builds a web front end or a different stack when needed. One setup fee, then a retainer for ongoing work.
+- **We run it for you:** Omni by Enterprise DNA installs it, manages access and backups, prepares reviews and keeps it working. One setup fee, then a retainer.
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-enov8">Instead of Enov8</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+[Book a 30-minute call with Sam](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=enov8).
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
+## Start with the synthetic demo
 
----
+Node 20 or newer. No cloud account is needed for the embedded database.
 
-## What is this
-
-Test Environments for Claude Code does the job you pay Enov8 for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Enov8 dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Enov8 per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=enov8).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
-
-## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
-
-```bash
-git clone https://github.com/Enterprise-DNA-OS/test-environments-for-claude-code.git
-cd test-environments-for-claude-code
+```sh
 npm install
+npm test
 npm run demo
+npm run environments -- conflicts
+npm run environments -- readiness --json
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+The demo has four instances, two clashing reservations, a version mismatch, stale evidence and overdue work. It uses invented businesses and people. Seeding is repeatable and does not reset edited records. Use a fresh DATA_DIR for real data. DATABASE_URL selects PostgreSQL, otherwise PGlite persists under .data/db. Never commit either.
 
-### Use it with your own Postgres or Supabase
+## What it does
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+The instance register links systems, environment groups and owners. Bookings reserve one or more instances with explicit versions. Requested bookings can overlap so demand remains visible. Confirmation locks the relevant instance records and rejects overlapping confirmed bookings. Time windows use UTC instants and are half-open: one booking can start exactly when another ends.
 
-## The commands
+A booking cannot be confirmed without current evidence that lasts through its end, the requested versions, recorded healthy status, synthetic or masked test data and no open blockers. Later evidence can make a confirmed booking unready. Read readiness again before starting work. This checks records only: it does not contact environments, verify masking or execute a release. The operator remains responsible for source evidence.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+Imports, checks and activity are append-only through database triggers. Instance metadata and booking states remain operational records. Actor labels are not authentication and a database owner can bypass controls. This is a trusted local operator tool, not a multi-tenant service.
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Recurring jobs
 
-## Instead of Enov8
+- `/instances`: List the environment instances, owners and recorded readiness.
+- `/bookings`: Read booking windows, projects, owners and status.
+- `/booking`: Read the named booking, all its resource requirements and clashes.
+- `/conflicts`: Find overlapping open bookings on the same instance.
+- `/readiness`: Review the evidence and versions required for open bookings.
+- `/drift`: Find requested versions that differ from recorded evidence.
+- `/overdue`: Read overdue issues, unconfirmed starts and unfinished handovers.
+- `/compliance`: Check recorded evidence and retention review dates against the documented rules.
+- `/issues`: Read open and closed follow-up work.
+- `/demand`: Count future open bookings by instance.
+- `/idle`: Find active instances with no open booking in the next 30 days.
+- `/activity`: Read the append-only activity record.
+- `/available`: Find ready instances without any requested or confirmed booking in a window.
+- `/add-instance`: Add an instance with a known system, group and owner.
+- `/book`: Record a booking request with one or more instances and required versions.
+- `/check`: Record fresh test evidence. Read the source report before recording a version, health or data classification.
+- `/log-issue`: Log an issue and its responsible owner. Blocking defaults to yes.
+- `/close-issue`: Close a named issue only after the operator provides its resolution.
+- `/confirm`: Confirm a requested booking only on an explicit operator instruction. Check readiness and clashes first.
+- `/close-booking`: Record completion with the test result, reset work and next owner, or cancel with a reason.
+- `/import`: Read docs/replace-enov8.md, inspect the headers and reconcile counts. Test first, then import on the operator instruction.
+- `/export`: Export every record and the original imported CSV to a new private file.
+- `/weekly-review`: Draft the Monday review from readiness, conflicts and overdue work.
+- `/draft-handover`: Read the named booking and write its handover draft.
+- `/help`: Show available commands and flags.
+- /customise: add fields and change rules with a tested migration.
+- /new-view: add a read-only report in the same brand.
 
-<!-- TODO(author): how to bring data across from Enov8; link docs/replace-enov8.md -->
+All CLI commands support --json. Flags use --name=value. PowerShell users can put JSON resource arguments in a variable before passing them as one argument. Run npm run environments -- help for accepted flags.
 
-## Architecture
+## Ten questions to ask your own records
 
-```
-test-environments-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
+1. Which project pairs are competing for the same environment window? (`conflicts`)
+2. Which booked instances have the wrong recorded version? (`drift`)
+3. Which bookings outlast the validity of their readiness evidence? (`readiness`)
+4. Which test environments still have personal or unclassified data? (`compliance`)
+5. Who owns the blockers preventing an environment handover? (`issues`)
+6. Which booking confirmations and handovers are overdue? (`overdue`)
+7. Which ready instances are free for our next rehearsal? (`available --start="<start>" --end="<end>"`)
+8. Which instances have no booking in the next month? (`idle`)
+9. Where is future booking demand concentrated? (`demand`)
+10. Who recorded each readiness check and booking decision? (`activity`)
 
-## Built for coding agents
+These are supported analyses, not an assertion that Enov8 cannot produce them. Your own evidence rules and cross-project history determine what makes each answer useful.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Your first hour: ten things to ask for
 
-## Contributing
+1. Put our name, logo and colours in brand.json.
+2. Show all overlapping bookings and their owners.
+3. Compare requested versions with recorded versions.
+4. Show evidence that expires before a booking ends.
+5. Draft Monday review from readiness, conflicts and overdue work.
+6. Find a free rehearsal window on a ready instance.
+7. Test an import of our Enov8 instance download.
+8. Record a fresh masking or synthetic-data check from our evidence.
+9. Add a reset-owner field with a tested migration.
+10. Export a complete private snapshot before changing a rule.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+## Switching from Enov8
 
-## Want it installed and run for you?
+Read [the replace guide](docs/replace-enov8.md). One command imports the documented environment-instance CSV fields, preserves all other columns and the original file, and rejects silent overwrites. It does not turn exported status into a fresh readiness check. Reconcile a real account export before switching. Booking history, components, dependencies, diagrams, automations and integrations need separate mapping. Enterprise DNA can bring these into your version.
 
-Enterprise DNA installs Test Environments for Claude Code for your business, migrates your Enov8 data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+## Branded documents and read-only views
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=enov8)
-- Read more: [enterprisedna.co/omni/instead-of/enov8](https://enterprisedna.co/omni/instead-of/enov8?utm_source=github&utm_medium=readme&utm_campaign=enov8)
+Edit brand.json for your business name, logo and colours. npm run docs produces booking briefs, handover drafts and evidence reviews from the records. npm run view produces the week, readiness and attention dashboards. weekly-review and draft-handover write private Markdown drafts. No command sends or publishes. Print HTML to PDF when a document needs signing or filing.
 
-## License
+[Why no front end](docs/why-no-front-end.md) explains where a screen adds value. [Compliance](docs/compliance.md) separates implemented record checks from the rules they support. [Research](docs/research.md) records the price evidence, selection scores and scope.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+## Verification and operations
+
+npm test uses a temporary database and output directory. It exercises every CLI command, repeatable seeding, atomic imports, clash and evidence gates, ambiguous names, dates, exports, document rendering and HTML escaping. CI tests Node 20 and 22 on Windows and Ubuntu and PostgreSQL 16 on Ubuntu. Report observed results separately from configured checks. TEST_DATABASE_URL must reference an empty disposable database.
+
+The tables have row-level security and no PUBLIC privileges. Use a trusted database owner for the CLI. Production multi-user authentication, access boundaries and hosting need a separate deployment design. Export snapshots include original imports and activity; use native database backups as well. Drafts and exports contain business data.
+
+## Licence
+
+MIT. Copyright 2026 Enterprise DNA. Enov8 is the incumbent's product name. This project is independent and does not copy its code or assets.

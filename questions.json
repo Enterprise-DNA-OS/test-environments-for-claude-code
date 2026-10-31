@@ -1,0 +1,42 @@
+[
+  {
+    "ask": "Which project pairs are competing for the same environment window?",
+    "command": "conflicts"
+  },
+  {
+    "ask": "Which booked instances have the wrong recorded version?",
+    "command": "drift"
+  },
+  {
+    "ask": "Which bookings outlast the validity of their readiness evidence?",
+    "command": "readiness"
+  },
+  {
+    "ask": "Which test environments still have personal or unclassified data?",
+    "command": "compliance"
+  },
+  {
+    "ask": "Who owns the blockers preventing an environment handover?",
+    "command": "issues"
+  },
+  {
+    "ask": "Which booking confirmations and handovers are overdue?",
+    "command": "overdue"
+  },
+  {
+    "ask": "Which ready instances are free for our next rehearsal?",
+    "command": "available --start=\"<start>\" --end=\"<end>\""
+  },
+  {
+    "ask": "Which instances have no booking in the next month?",
+    "command": "idle"
+  },
+  {
+    "ask": "Where is future booking demand concentrated?",
+    "command": "demand"
+  },
+  {
+    "ask": "Who recorded each readiness check and booking decision?",
+    "command": "activity"
+  }
+]

@@ -1,11 +1,58 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "booking-brief",
+    "title": "Environment booking brief",
+    "for_each": "SELECT id,name FROM bookings ORDER BY name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Booking",
+        "layout": "record",
+        "sql": "SELECT name,project,owner,purpose,starts_at,ends_at,status,confirmed_by FROM bookings WHERE id=$1"
+      },
+      {
+        "title": "Readiness",
+        "sql": "SELECT instance,required_version,recorded_version,health,data_class,readiness FROM booking_readiness WHERE booking_id=$1"
+      },
+      {
+        "title": "Conflicts",
+        "sql": "SELECT instance,booking_a,booking_b,overlap_start,overlap_end FROM booking_conflicts WHERE booking_a_id=$1 OR booking_b_id=$1"
+      }
+    ]
+  },
+  {
+    "name": "handover",
+    "title": "Environment handover",
+    "for_each": "SELECT id,name FROM bookings ORDER BY name",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Handover record",
+        "layout": "record",
+        "sql": "SELECT name,project,owner,status,resolution FROM bookings WHERE id=$1",
+        "note": "A draft until the operator records test results, reset work and the next owner."
+      },
+      {
+        "title": "Outstanding work",
+        "sql": "SELECT i.name instance,x.name,x.owner,x.due_date,x.status FROM issues x JOIN instances i ON i.id=x.instance_id WHERE x.instance_id IN(SELECT instance_id FROM booking_instances WHERE booking_id=$1) ORDER BY x.due_date"
+      }
+    ]
+  },
+  {
+    "name": "evidence-review",
+    "title": "Test environment evidence review",
+    "for_each": "SELECT id,name FROM instances ORDER BY name",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Current evidence",
+        "layout": "record",
+        "sql": "SELECT name,owner,version,health,data_class,evidence,reviewer,valid_until,retention_until,readiness FROM instance_readiness WHERE id=$1"
+      },
+      {
+        "title": "Evidence history",
+        "sql": "SELECT version,health,data_class,reviewer,evidence,valid_until,created_at FROM checks WHERE instance_id=$1 ORDER BY created_at DESC"
+      }
     ]
   }
 ]

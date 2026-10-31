@@ -1,5 +1,3 @@
-# Slash commands
+# Recurring jobs
 
-One file per recurring job. Each command tells Claude Code exactly which CLI command to run and how to present the result, so the operator never re-explains the job.
-
-Add a command every time the same ask comes twice. Frontmatter needs a `description:` line. The body is the brief.
+The commands here are the single workflow library. Read CLAUDE.md for routing. Every operation runs through scripts/environments.mjs or the shared document and view renderers.

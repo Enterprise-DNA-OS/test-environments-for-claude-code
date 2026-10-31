@@ -1,13 +1,46 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Test Environments for Claude Code: what needs attention, rendered by npm run view",
+    "title": "The environment week",
+    "subtitle": "Recorded evidence. No live probes or automated deployments.",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Bookings",
+        "sql": "SELECT name,project,owner,starts_at,ends_at,status FROM bookings ORDER BY starts_at"
+      },
+      {
+        "title": "Clashes",
+        "sql": "SELECT instance,booking_a,booking_b,overlap_start,overlap_end FROM booking_conflicts ORDER BY overlap_start"
+      }
+    ]
+  },
+  {
+    "name": "readiness",
+    "title": "Evidence and version readiness",
+    "subtitle": "Recorded evidence. No live probes or automated deployments.",
+    "sections": [
+      {
+        "title": "Instances",
+        "sql": "SELECT name,owner,health,data_class,version,readiness FROM instance_readiness ORDER BY name"
+      },
+      {
+        "title": "Booking readiness",
+        "sql": "SELECT booking,instance,required_version,recorded_version,readiness FROM booking_readiness ORDER BY booking,instance"
+      }
+    ]
+  },
+  {
+    "name": "attention",
+    "title": "Work needing attention",
+    "subtitle": "Recorded evidence. No live probes or automated deployments.",
+    "sections": [
+      {
+        "title": "Overdue work",
+        "sql": "SELECT kind,name,owner,due FROM overdue_work ORDER BY due"
+      },
+      {
+        "title": "Evidence checks",
+        "sql": "SELECT instance,rule,finding FROM compliance_findings ORDER BY instance,rule"
       }
     ]
   }

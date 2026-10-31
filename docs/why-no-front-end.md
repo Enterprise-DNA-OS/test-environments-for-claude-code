@@ -1,24 +1,9 @@
-# Why there is no front end
+# Work by asking, review in a document
 
-Enov8 is a database with a subscription. The tables underneath it are ordinary: a few entities, a few relationships, a handful of workflows you repeat every week. What you pay for is the layer on top that lets people who do not write SQL get at those tables. Screens, filters, dashboards, forms.
+Environment coordination starts with records: who needs an instance, which version, when, and what evidence makes it ready. The coding agent reads and changes those records through one CLI. Read-only branded HTML shows the week, readiness and outstanding work.
 
-That layer used to be the whole product, because talking to a database was hard. It is not hard any more. Open this folder in Claude Code, describe what you want, and it writes the query, runs it, and explains the answer. Ask a question the dashboard never had a chart for and you still get an answer.
+This base has no drag-and-drop booking calendar, mobile interface, offline synchronisation or authenticated team portal. A visual topology editor is useful for large estates; this desk stores instance and group labels instead. Nothing monitors a live system, deploys a version, provisions an instance or masks production data.
 
-## What you gain
+A team that needs those capabilities can have Enterprise DNA build and connect them into its version. The database remains the system of record, with proper access boundaries designed for that deployment.
 
-- **Better answers.** A dashboard shows what the vendor decided to chart. Here you ask your own question, in your own words, and get it answered against your own data.
-- **No seats.** Everyone who needs to look can look. The bill does not grow with headcount.
-- **Your data in your Postgres.** Plain tables. Back them up, query them from anything, leave any time. There is no export step because there is nothing to leave.
-- **A process that matches you.** When your way of working changes, you add a command. You do not wait for a feature request to clear.
-
-## What you give up
-
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
-- **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
-
-## Who this fits
-
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep Enov8. If you need the answers more than the screens, this is cheaper, faster and yours.
-
-Installed and run for you: https://enterprisedna.co/omni/instead-of/enov8
+Use Claude Code, Codex, OpenCode or Cursor. AGENTS.md and CLAUDE.md lead to the same command library. A screen is a view of the records. The agent carries out the requested work and reports its result in chat.
